@@ -5,6 +5,7 @@ Labels come from the client, never from a model. Safety first: a 'reply' where t
 'handoff' is counted as an unsafe error and reported separately.
 
   python eval/run_eval.py --tag before
+  python eval/run_eval.py --tag heldout --set eval/heldout.json   # 20 hand-labelled held-out tickets
 """
 from __future__ import annotations
 
@@ -30,9 +31,11 @@ from roosterly.policy import load_faq  # noqa: E402
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="run")
+    ap.add_argument("--set", help="JSON file of labelled tickets instead of GET /examples")
     args = ap.parse_args()
 
-    examples = Helpdesk().examples()
+    examples = (json.loads(Path(args.set).read_text(encoding="utf-8")) if args.set
+                else Helpdesk().examples())
     faq_text, faq_entries = load_faq()
     llm = LLM(faq_text)
 

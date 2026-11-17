@@ -1,0 +1,272 @@
+{
+ "tag": "labelled_v2",
+ "when": "2026-11-17T19:39:21",
+ "summary": {
+  "action_ok": 8,
+  "category_ok": 8,
+  "priority_ok": 7,
+  "language_ok": 10,
+  "unsafe_replies": 0,
+  "n": 10,
+  "cost_usd": 0.0,
+  "cost_per_100_tickets_usd": 0.0,
+  "tokens_in": 26573,
+  "tokens_out": 1597
+ },
+ "rows": [
+  {
+   "id": "E01",
+   "action_ok": false,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "label": {
+    "action": "reply",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "faq_ids": [],
+   "gates": [],
+   "confidence": 0.9,
+   "english_gloss": "",
+   "unsafe": false
+  },
+  {
+   "id": "E02",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": false,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P3",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "faq_ids": [
+    "F06"
+   ],
+   "gates": [],
+   "confidence": 1.0,
+   "english_gloss": "Hello,\nYou can change your company details, including the VAT number, under Settings → Company details. This applies to future invoices.\n\nTeam Roosterly",
+   "unsafe": false
+  },
+  {
+   "id": "E03",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "faq_ids": [],
+   "gates": [
+    "keyword:terugbetal",
+    "llm_critical"
+   ],
+   "confidence": 1.0,
+   "english_gloss": "",
+   "unsafe": false
+  },
+  {
+   "id": "E04",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "faq_ids": [
+    "F03"
+   ],
+   "gates": [],
+   "confidence": 1.0,
+   "english_gloss": "To swap a shift, the employee must tap \"Offer swap\" on the scheduled shift in the app. Colleagues with the same role can accept the swap. The manager approves it under Rooster → Requests.",
+   "unsafe": false
+  },
+  {
+   "id": "E05",
+   "action_ok": false,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "feature_request",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "feature_request",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "faq_ids": [],
+   "gates": [],
+   "confidence": 0.9,
+   "english_gloss": "",
+   "unsafe": false
+  },
+  {
+   "id": "E06",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": false,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P2",
+    "language": "en"
+   },
+   "faq_ids": [],
+   "gates": [],
+   "confidence": 0.9,
+   "english_gloss": "",
+   "unsafe": false
+  },
+  {
+   "id": "E07",
+   "action_ok": true,
+   "category_ok": false,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "faq_ids": [
+    "F05"
+   ],
+   "gates": [],
+   "confidence": 1.0,
+   "english_gloss": "The Plus subscription costs €6 per active employee per month. You can upgrade at any time under Settings → Subscription, and the new price applies from the next invoice. Team Roosterly",
+   "unsafe": false
+  },
+  {
+   "id": "E08",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "close",
+    "category": "other",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "close",
+    "category": "other",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "faq_ids": [],
+   "gates": [],
+   "confidence": 1.0,
+   "english_gloss": "",
+   "unsafe": false
+  },
+  {
+   "id": "E09",
+   "action_ok": true,
+   "category_ok": false,
+   "priority_ok": false,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "question",
+    "priority": "P1",
+    "language": "nl"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "other",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "faq_ids": [],
+   "gates": [
+    "keyword:persoonsgegevens",
+    "llm_critical"
+   ],
+   "confidence": 1.0,
+   "english_gloss": "",
+   "unsafe": false
+  },
+  {
+   "id": "E10",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "faq_ids": [
+    "F11"
+   ],
+   "gates": [],
+   "confidence": 1.0,
+   "english_gloss": "Hi, you can find current outages and planned maintenance at status.roosterly.nl. Team Roosterly",
+   "unsafe": false
+  }
+ ]
+}

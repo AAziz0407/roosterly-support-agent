@@ -4,8 +4,17 @@ from __future__ import annotations
 from . import policy
 
 
+TICKET_FIELDS = ("id", "received_at", "channel", "customer_plan", "subject", "body")
+
+
+def model_input(ticket: dict) -> dict:
+    """The ticket as the helpdesk returns it (docs/api_reference.md, 'A ticket')."""
+    return {k: ticket.get(k) for k in TICKET_FIELDS}
+
+
 def decide(ticket: dict, llm, faq_entries: dict):
     """Return (decision, gates). Any model failure degrades to a safe handoff."""
+    ticket = model_input(ticket)
     try:
         proposal = llm.triage(ticket)
     except Exception as e:  # network, refusal, bad JSON ...

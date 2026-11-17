@@ -15,7 +15,7 @@ def test_redact_iban_and_card():
 def test_keyword_gate_dutch():
     for text, floor in [("Kunnen we die maand terugkrijgen?", "P2"),
                         ("We willen opzeggen", "P2"),
-                        ("Ik wil mijn persoonsgegevens (AVG) inzien", "P1"),
+                        ("Ik wil mijn persoonsgegevens (AVG) inzien", "P2"),
                         ("Ik denk dat ons account gehackt is", "P1")]:
         hits, prio = policy.keyword_gate("", text)
         assert hits and prio == floor, text
@@ -50,6 +50,14 @@ def test_ungrounded_number_blocks_reply():
     assert out["action"] == "handoff"
 
 
+def test_numbers_from_ticket_and_calculation_are_grounded():
+    ticket = "Wat kost Plus voor 25 medewerkers? Wij hebben iOS 15."
+    faq = [FAQ["F05"]]
+    assert policy.ungrounded_tokens("25 actieve medewerkers × €6 = €150 per maand", faq, ticket) == []
+    assert policy.ungrounded_tokens("iOS 15 wordt niet ondersteund", faq, ticket) == []
+    assert policy.ungrounded_tokens("Dat kost €99 per maand", faq, ticket) == ["99"]
+
+
 def test_missing_judge_or_low_confidence_blocks():
     t = {"subject": "", "body": "hoe"}
     assert policy.finalize(_reply(), t, FAQ, None)[0]["action"] == "handoff"
@@ -60,3 +68,10 @@ def test_missing_judge_or_low_confidence_blocks():
 def test_close_needs_high_confidence():
     d = {"action": "close", "confidence": 0.5, "reason": "spam", "handoff_note": ""}
     assert policy.finalize(d, {"subject": "", "body": "x"}, FAQ, None)[0]["action"] == "handoff"
+
+
+def test_guess_language():
+    assert policy.guess_language("How do I switch the app to English? Is it in the menu?") == "en"
+    assert policy.guess_language("Wo werden meine Daten gespeichert? Ist das in der EU?") == "de"
+    assert policy.guess_language("Hoe voeg ik een medewerker toe aan het rooster?") == "nl"
+    assert policy.guess_language("ok") is None

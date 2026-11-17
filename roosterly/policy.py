@@ -50,7 +50,8 @@ TRIGGERS = [
     (r"betwist|onterecht|dubbel afgeschreven|afgeschreven|incasso|stornier|chargeback|te veel betaald|dispute", "P2"),
     (r"opzeg|opzegging|beëindig|beeindig|stopzet|stoppen met|annulering van (het |ons |mijn )?(abonnement|contract)|cancell?ation|cancel (my|our|the) (subscription|account|contract)|kündig|contract|overeenkomst", "P2"),
     (r"overstappen|stap over|andere leverancier|concurrent|alternatief|weg bij jullie|niet meer gebruiken|switch to|leave you|wechseln", "P2"),
-    (r"\bavg\b|gdpr|dsgvo|persoonsgegevens|vergeten worden|gegevens verwijder|verwijder mijn|datalek|data breach", "P1"),
+    (r"\bavg\b|gdpr|dsgvo|persoonsgegevens|vergeten worden|gegevens verwijder|verwijder mijn|personal data|inzage", "P2"),
+    (r"datalek|data breach|data leak", "P1"),
     (r"gehackt|hack|inbreuk|ongeautoriseerd|onbevoegd|phishing|verdacht|beveiligingsincident|security incident|unauthori[sz]ed", "P1"),
     (r"advocaat|juridisch|rechtszaak|rechter|aansprakelijk|aangifte|sommatie|ingebrekestelling|dagvaard|autoriteit persoonsgegevens|lawyer|legal action|sue |klacht indienen|anwalt|klage", "P1"),
 ]
@@ -81,6 +82,14 @@ _STOP = {
 }
 
 
+def guess_language(text: str):
+    """nl/en/de from stopword counts, or None when the text is too short to tell."""
+    words = re.findall(r"[a-zäöüß]+", text.lower())
+    score = {k: sum(w in v for w in words) for k, v in _STOP.items()}
+    best = max(score, key=score.get)
+    return best if score[best] >= 2 and sum(s == score[best] for s in score.values()) == 1 else None
+
+
 def language_looks_right(draft: str, lang: str) -> bool:
     words = re.findall(r"[a-zäöüß]+", draft.lower())
     if not words:
@@ -89,12 +98,23 @@ def language_looks_right(draft: str, lang: str) -> bool:
     return score[lang] >= 3 and score[lang] >= max(score.values())
 
 
-def ungrounded_tokens(draft: str, faq_entries: list):
-    """Numbers / domains in the draft that are not in the cited FAQ entries."""
+def _num(s: str) -> float:
+    return float(s.replace(",", "."))
+
+
+def ungrounded_tokens(draft: str, faq_entries: list, ticket_text: str = ""):
+    """Numbers / domains in the draft that are not in the FAQ entries or the ticket.
+
+    A number is also allowed when it is the product of two numbers that are in the FAQ or the ticket
+    (for example 25 employees x €6 = 150), so a calculation the customer can check is not blocked.
+    """
     source = "\n".join(faq_entries)
-    allowed_nums = set(_NUM_RE.findall(source))
+    allowed_nums = set(_NUM_RE.findall(source)) | set(_NUM_RE.findall(ticket_text))
+    base = {_num(n) for n in allowed_nums}
+    products = {round(a * b, 4) for a in base for b in base}
     allowed_dom = {d.lower() for d in _DOMAIN_RE.findall(source)}
-    bad = [n for n in _NUM_RE.findall(draft) if n not in allowed_nums]
+    bad = [n for n in _NUM_RE.findall(draft)
+           if n not in allowed_nums and round(_num(n), 4) not in products]
     bad += [d for d in _DOMAIN_RE.findall(draft) if d.lower() not in allowed_dom]
     return bad
 
@@ -142,7 +162,7 @@ def finalize(d: dict, ticket: dict, faq_entries: dict, judge: dict | None):
         if draft and not language_looks_right(draft, out["language"]):
             problems.append("language_mismatch")
         if draft and ids:
-            bad = ungrounded_tokens(draft, [faq_entries[i] for i in ids])
+            bad = ungrounded_tokens(draft, [faq_entries[i] for i in ids], ticket.get("body", ""))
             if bad:
                 problems.append("ungrounded:" + ",".join(bad[:5]))
         if judge is None or not (judge.get("supported") and judge.get("answers_question")):
@@ -160,8 +180,10 @@ def finalize(d: dict, ticket: dict, faq_entries: dict, judge: dict | None):
 
     if out["action"] == "handoff":
         note = redact((out.get("handoff_note") or "").strip())
-        if not note:
-            note = "Automatic triage could not complete safely. Please read the ticket and decide."
+        if not note:  # a blocked reply has no note from the model: say what it was about and why it stopped
+            why = out.get("reason") or "the ticket"
+            note = (f"Customer wants: {why} Key facts: an automatic reply was blocked by a check. "
+                    "Next step: read the ticket and answer it or confirm the help-centre fact first.")
         if gates:
             note += "  [Agent flags: " + " / ".join(gates) + "]"
         out["handoff_note"] = note
