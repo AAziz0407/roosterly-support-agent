@@ -1,0 +1,414 @@
+{
+ "tag": "haiku_blind15",
+ "model": "claude-haiku-5-5",
+ "when": "2026-11-17T21:01:44",
+ "cost_usd": 0.096,
+ "tokens_in": 78,
+ "tokens_out": 30857,
+ "rows": [
+  {
+   "ticket": {
+    "id": "B01",
+    "received_at": "2026-11-16T08:12:00+00:00",
+    "channel": "email",
+    "customer_plan": "Basis",
+    "subject": "Nieuwe dienst",
+    "body": "Hoe maak ik een nieuwe dienst aan voor volgende week?"
+   },
+   "decision": {
+    "language": "nl",
+    "category": "question",
+    "priority": "P4",
+    "reason": "The customer asks how to create a new shift for next week. This is a how-to question, not a bug or money issue, but the help centre has no entry on creating shifts in the rota (it covers adding employees, swapping shifts and payroll export only), so a person must answer it.",
+    "action": "handoff",
+    "faq_ids": [],
+    "fully_answered_by_faq": false,
+    "critical_topic": false,
+    "confidence": 0.85,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants to know how to create a new shift for next week. Key facts: the help centre does not cover creating shifts in the rota; the customer is on the Basis plan and no bug or billing issue is stated. Next step: send the customer the steps for adding a shift in the rota, or confirm the correct menu path with the product team and reply."
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B02",
+    "received_at": "2026-11-16T08:40:00+00:00",
+    "channel": "chat",
+    "customer_plan": "Plus",
+    "subject": "AFAS export",
+    "body": "The export to AFAS stopped working after the update last Tuesday. Payroll is due Friday."
+   },
+   "decision": {
+    "language": "en",
+    "category": "bug",
+    "priority": "P2",
+    "reason": "The AFAS payroll export stopped working after an update, and the customer has a payroll deadline on Friday. The help centre (F04) describes the AFAS export but gives no fix or workaround for this failure, so a person must investigate.",
+    "action": "handoff",
+    "faq_ids": [
+     "F04"
+    ],
+    "fully_answered_by_faq": false,
+    "critical_topic": false,
+    "confidence": 0.9,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants the AFAS payroll export fixed. Key facts: the export stopped working after the update last Tuesday; the customer is on the Plus plan, which includes the AFAS integration; payroll is due Friday, so P2 (core export blocked, deadline, no workaround in the help centre). Next step: check the AFAS integration and export logs for this account today and reply to the customer with a status before Friday."
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B03",
+    "received_at": "2026-11-16T09:05:00+00:00",
+    "channel": "email",
+    "customer_plan": "Basis",
+    "subject": "Wachtwoord",
+    "body": "Ik heb mijn wachtwoord vergeten en de resetmail komt niet aan."
+   },
+   "decision": {
+    "language": "nl",
+    "category": "bug",
+    "priority": "P3",
+    "reason": "The customer's reset email does not arrive. The help centre (F01) covers this case with a workaround: check the spam folder if no email arrives within 10 minutes. No security or always-a-human topic is involved.",
+    "action": "reply",
+    "faq_ids": [
+     "F01"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.85,
+    "draft_reply": "Hoi, u kunt een nieuw wachtwoord aanvragen op app.roosterly.nl/login. Klik op \"Wachtwoord vergeten\" en vul uw e-mailadres in. De resetlink is 60 minuten geldig. Komt de e-mail na 10 minuten nog niet aan, kijk dan in uw spamfolder. Team Roosterly",
+    "reply_english_gloss": "Hi, you can request a new password at app.roosterly.nl/login. Click \"Wachtwoord vergeten\" (Forgot password) and enter your email address. The reset link is valid for 60 minutes. If the email still hasn't arrived after 10 minutes, check your spam folder. Team Roosterly",
+    "handoff_note": ""
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B04",
+    "received_at": "2026-11-16T09:30:00+00:00",
+    "channel": "email",
+    "customer_plan": "Plus",
+    "subject": "Rechnung März",
+    "body": "Können Sie mir die Rechnung für März als PDF schicken?"
+   },
+   "decision": {
+    "language": "de",
+    "category": "billing",
+    "priority": "P4",
+    "reason": "The customer asks for the March invoice as a PDF. This is not a disputed charge, refund or contract change, and FAQ F06 says invoices can be downloaded under Instellingen → Abonnement → Facturen. The FAQ does not name the file format, so the reply points to the download path and does not promise a PDF.",
+    "action": "handoff",
+    "faq_ids": [
+     "F06"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.8,
+    "reply_english_gloss": "",
+    "handoff_note": "Automatic triage could not complete safely. Please read the ticket and decide.  [Agent flags: reply_blocked:judge_rejected]"
+   },
+   "gates": [
+    "reply_blocked:judge_rejected"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B05",
+    "received_at": "2026-11-16T10:00:00+00:00",
+    "channel": "form",
+    "customer_plan": "Plus",
+    "subject": "Ander pakket",
+    "body": "Wij willen per 1 april overstappen naar een ander pakket. Hoe werkt dat?"
+   },
+   "decision": {
+    "language": "nl",
+    "category": "billing",
+    "priority": "P2",
+    "reason": "The customer asks to switch to another plan from 1 April, which is a contract change and always goes to a human. The customer is on Plus, and the ticket does not say which plan they want.",
+    "action": "handoff",
+    "faq_ids": [
+     "F05"
+    ],
+    "fully_answered_by_faq": false,
+    "critical_topic": true,
+    "confidence": 0.95,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants to switch to a different plan from 1 April. Key facts: the customer is on Plus and the ticket does not name the target plan; a plan change is a contract change, so it is P2 and always goes to a person. Next step: confirm the target plan and the switch date with the customer, then process the change and confirm the next invoice.  [Agent flags: keyword:overstappen / llm_critical]"
+   },
+   "gates": [
+    "keyword:overstappen",
+    "llm_critical"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B06",
+    "received_at": "2026-11-16T10:20:00+00:00",
+    "channel": "email",
+    "customer_plan": "Basis",
+    "subject": "Data deletion",
+    "body": "Please delete all personal data you hold about our former manager."
+   },
+   "decision": {
+    "language": "en",
+    "category": "other",
+    "priority": "P2",
+    "reason": "Personal data deletion request (GDPR/AVG) about a former manager, which always goes to a human. The help centre does not cover deletion requests.",
+    "action": "handoff",
+    "faq_ids": [],
+    "fully_answered_by_faq": false,
+    "critical_topic": true,
+    "confidence": 0.95,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants all personal data held about their former manager deleted. Key facts: this is a personal data request (GDPR/AVG), P2; the help centre does not cover deletion requests; the ticket does not state whether the sender is authorised to act for the former manager. Next step: verify the sender's identity and authority, then handle the erasure request under the data-protection process.  [Agent flags: keyword:personal data / llm_critical]"
+   },
+   "gates": [
+    "keyword:personal data",
+    "llm_critical"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B07",
+    "received_at": "2026-11-16T10:45:00+00:00",
+    "channel": "chat",
+    "customer_plan": "Basis",
+    "subject": "Android Wear",
+    "body": "Kunnen jullie een app voor Android Wear maken? Dat zou fijn zijn."
+   },
+   "decision": {
+    "language": "nl",
+    "category": "feature_request",
+    "priority": "P4",
+    "reason": "The customer asks for a Wear OS app, which is a feature wish with no bug or money involved. F10 covers ideas: they are logged and go on the public roadmap, with no delivery date promised.",
+    "action": "reply",
+    "faq_ids": [
+     "F10"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.92,
+    "draft_reply": "Hoi, dank voor uw idee. We hebben het genoteerd. U kunt het op het publieke roadmap bekijken en stemmen op roadmap.roosterly.nl. Team Roosterly",
+    "reply_english_gloss": "Hi, thanks for your idea. We have logged it. You can see it on our public roadmap and vote for it at roadmap.roosterly.nl. Team Roosterly",
+    "handoff_note": ""
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B08",
+    "received_at": "2026-11-16T11:10:00+00:00",
+    "channel": "email",
+    "customer_plan": "Plus",
+    "subject": "Gehackt",
+    "body": "Iemand heeft ons systeem gehackt. Er zijn diensten verwijderd die we niet kennen."
+   },
+   "decision": {
+    "language": "nl",
+    "category": "other",
+    "priority": "P1",
+    "reason": "The customer reports that their system was hacked and that services they do not recognise were deleted. This is a possible security incident and an account takeover, which is always a human topic and P1 under the brief.",
+    "action": "handoff",
+    "faq_ids": [],
+    "fully_answered_by_faq": false,
+    "critical_topic": true,
+    "confidence": 0.95,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants urgent help after their system was hacked and unknown services were deleted. Key facts: P1, possible security incident and account takeover; the help centre does not cover this; the ticket is on the Plus plan and the customer did not say which account or services are affected. Next step: contact the customer now, check the account's login and activity logs, and force a password reset for the affected accounts.  [Agent flags: keyword:gehackt / llm_critical]"
+   },
+   "gates": [
+    "keyword:gehackt",
+    "llm_critical"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B09",
+    "received_at": "2026-11-16T11:30:00+00:00",
+    "channel": "app",
+    "customer_plan": "Basis",
+    "subject": "Android 9",
+    "body": "Does the app work on Android 9?"
+   },
+   "decision": {
+    "language": "en",
+    "category": "question",
+    "priority": "P3",
+    "reason": "The customer asks whether the app works on Android 9. The help centre (F12) states the app needs Android 10 or later, so the answer is no. The device is below the stated minimum, which is the P3 case, and there is no urgency.",
+    "action": "handoff",
+    "faq_ids": [
+     "F12"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.93,
+    "reply_english_gloss": "",
+    "handoff_note": "Automatic triage could not complete safely. Please read the ticket and decide.  [Agent flags: reply_blocked:judge_rejected]"
+   },
+   "gates": [
+    "reply_blocked:judge_rejected"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B10",
+    "received_at": "2026-11-16T11:50:00+00:00",
+    "channel": "email",
+    "customer_plan": "Basis",
+    "subject": "",
+    "body": "hallo"
+   },
+   "decision": {
+    "language": "nl",
+    "category": "other",
+    "priority": "P4",
+    "reason": "The ticket is only the greeting \"hallo\" with no subject and no request, so it is not spam and cannot be answered from the help centre. Language is a guess: the code detected none, and \"hallo\" is the same in Dutch and German, so nl is used as the default.",
+    "action": "handoff",
+    "faq_ids": [],
+    "fully_answered_by_faq": false,
+    "critical_topic": false,
+    "confidence": 0.7,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants: unclear, the ticket contains only the greeting \"hallo\" with no subject or request. Key facts: plan Basis, no request in the text, language not detected by code (the greeting fits Dutch or German, so the ticket may have been cut off). Next step: send the customer a short message in their language asking what they need, and check whether a fuller message arrived from the same sender."
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B11",
+    "received_at": "2026-11-16T12:15:00+00:00",
+    "channel": "email",
+    "customer_plan": "Plus",
+    "subject": "Kan niet inloggen",
+    "body": "Ons team kan niet inloggen op de website sinds vanochtend, we staan stil."
+   },
+   "decision": {
+    "language": "nl",
+    "category": "bug",
+    "priority": "P1",
+    "reason": "The whole team cannot log in to the website since this morning and the customer says their work has stopped. The help centre does not cover this login failure, and no workaround is stated.",
+    "action": "handoff",
+    "faq_ids": [
+     "F11"
+    ],
+    "fully_answered_by_faq": false,
+    "critical_topic": true,
+    "confidence": 0.9,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants help because their whole team cannot log in to the website since this morning. Key facts: P1, a team-wide login failure that stops their work; the help centre does not cover this error, and the only related entry is F11 (status.roosterly.nl for outages). Next step: check status.roosterly.nl and the login service for outages now, then contact the customer.  [Agent flags: llm_critical]"
+   },
+   "gates": [
+    "llm_critical"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B12",
+    "received_at": "2026-11-16T12:40:00+00:00",
+    "channel": "chat",
+    "customer_plan": "Basis",
+    "subject": "Export CSV",
+    "body": "Wie exportiere ich die Schichtpläne als CSV?"
+   },
+   "decision": {
+    "language": "de",
+    "category": "question",
+    "priority": "P4",
+    "reason": "The customer asks how to export shift schedules as CSV. The help centre covers CSV export only for approved hours to payroll (F04), not for shift plans, and does not say whether it is available on the Basis plan, so it does not fully answer the question.",
+    "action": "handoff",
+    "faq_ids": [
+     "F04"
+    ],
+    "fully_answered_by_faq": false,
+    "critical_topic": false,
+    "confidence": 0.75,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants to know how to export shift schedules (Schichtpläne) as a CSV file. Key facts: the help centre covers CSV export only for approved hours to payroll under Instellingen → Koppelingen → Salaris (F04), not for shift schedules, and does not say whether it is available on the Basis plan; ticket is in German, plan Basis, P4. Next step: confirm whether a schedule CSV export exists and is available on Basis, then reply in German."
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B13",
+    "received_at": "2026-11-16T13:05:00+00:00",
+    "channel": "email",
+    "customer_plan": "Plus",
+    "subject": "Dubbele afschrijving",
+    "body": "Ik zie een dubbele afschrijving van 49 euro op onze rekening van vorige maand."
+   },
+   "decision": {
+    "language": "nl",
+    "category": "billing",
+    "priority": "P2",
+    "reason": "The customer disputes a duplicate €49 charge on last month's account. Disputed charges are always-a-human billing topics, so this is P2 and goes to handoff.",
+    "action": "handoff",
+    "faq_ids": [],
+    "fully_answered_by_faq": false,
+    "critical_topic": true,
+    "confidence": 0.95,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants a duplicate €49 charge from last month checked and reversed. Key facts: P2, disputed charge; the customer reports seeing the charge twice on last month's account; plan is Plus; the help centre does not cover charge disputes. Next step: check last month's charges in billing and confirm the duplicate before any refund or reversal.  [Agent flags: llm_critical]"
+   },
+   "gates": [
+    "llm_critical"
+   ]
+  },
+  {
+   "ticket": {
+    "id": "B14",
+    "received_at": "2026-11-16T13:30:00+00:00",
+    "channel": "form",
+    "customer_plan": "Basis",
+    "subject": "Vestigingen",
+    "body": "Kunnen we met meerdere vestigingen werken op ons huidige pakket?"
+   },
+   "decision": {
+    "language": "nl",
+    "category": "billing",
+    "priority": "P4",
+    "reason": "The customer asks whether multiple locations are possible on their current Basis plan. The help centre states that Basis covers one location and that locations are part of Plus (F05, F07), so this is a plan-limit question, not a plan change, and can be answered directly.",
+    "action": "reply",
+    "faq_ids": [
+     "F05",
+     "F07"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.9,
+    "draft_reply": "Hoi, op het Basis-pakket werkt Roosterly met één vestiging. Meerdere vestigingen zijn onderdeel van het Plus-pakket, dat onbeperkt vestigingen bevat. Team Roosterly",
+    "reply_english_gloss": "Hi, on the Basis plan Roosterly works with one location. Multiple locations are part of the Plus plan, which includes unlimited locations. Team Roosterly",
+    "handoff_note": ""
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "B15",
+    "received_at": "2026-11-16T14:00:00+00:00",
+    "channel": "email",
+    "customer_plan": "Plus",
+    "subject": "Wrong plan charge",
+    "body": "We were charged for Plus, but we are on Basis. Please fix this."
+   },
+   "decision": {
+    "language": "en",
+    "category": "billing",
+    "priority": "P2",
+    "reason": "The customer disputes a charge: they say they were billed the Plus rate but are on Basis. Disputed charges always go to a person, and the help centre does not settle which plan applies.",
+    "action": "handoff",
+    "faq_ids": [
+     "F05",
+     "F06"
+    ],
+    "fully_answered_by_faq": false,
+    "critical_topic": true,
+    "confidence": 0.95,
+    "reply_english_gloss": "",
+    "handoff_note": "Customer wants the Plus charge corrected, because they say they are on Basis. Key facts: P2, disputed charge; the helpdesk shows plan Plus, but the customer says Basis; the help centre does not cover a plan mismatch or refund. Next step: check the account's plan and the charges and invoices in billing, then correct the charge or refund the difference and reply within one working day.  [Agent flags: llm_critical]"
+   },
+   "gates": [
+    "llm_critical"
+   ]
+  }
+ ]
+}

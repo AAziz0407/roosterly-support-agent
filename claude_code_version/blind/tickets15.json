@@ -1,0 +1,17 @@
+[
+ {"id": "B01", "received_at": "2026-11-16T08:12:00+00:00", "channel": "email", "customer_plan": "Basis", "subject": "Nieuwe dienst", "body": "Hoe maak ik een nieuwe dienst aan voor volgende week?"},
+ {"id": "B02", "received_at": "2026-11-16T08:40:00+00:00", "channel": "chat", "customer_plan": "Plus", "subject": "AFAS export", "body": "The export to AFAS stopped working after the update last Tuesday. Payroll is due Friday."},
+ {"id": "B03", "received_at": "2026-11-16T09:05:00+00:00", "channel": "email", "customer_plan": "Basis", "subject": "Wachtwoord", "body": "Ik heb mijn wachtwoord vergeten en de resetmail komt niet aan."},
+ {"id": "B04", "received_at": "2026-11-16T09:30:00+00:00", "channel": "email", "customer_plan": "Plus", "subject": "Rechnung März", "body": "Können Sie mir die Rechnung für März als PDF schicken?"},
+ {"id": "B05", "received_at": "2026-11-16T10:00:00+00:00", "channel": "form", "customer_plan": "Plus", "subject": "Ander pakket", "body": "Wij willen per 1 april overstappen naar een ander pakket. Hoe werkt dat?"},
+ {"id": "B06", "received_at": "2026-11-16T10:20:00+00:00", "channel": "email", "customer_plan": "Basis", "subject": "Data deletion", "body": "Please delete all personal data you hold about our former manager."},
+ {"id": "B07", "received_at": "2026-11-16T10:45:00+00:00", "channel": "chat", "customer_plan": "Basis", "subject": "Android Wear", "body": "Kunnen jullie een app voor Android Wear maken? Dat zou fijn zijn."},
+ {"id": "B08", "received_at": "2026-11-16T11:10:00+00:00", "channel": "email", "customer_plan": "Plus", "subject": "Gehackt", "body": "Iemand heeft ons systeem gehackt. Er zijn diensten verwijderd die we niet kennen."},
+ {"id": "B09", "received_at": "2026-11-16T11:30:00+00:00", "channel": "app", "customer_plan": "Basis", "subject": "Android 9", "body": "Does the app work on Android 9?"},
+ {"id": "B10", "received_at": "2026-11-16T11:50:00+00:00", "channel": "email", "customer_plan": "Basis", "subject": "", "body": "hallo"},
+ {"id": "B11", "received_at": "2026-11-16T12:15:00+00:00", "channel": "email", "customer_plan": "Plus", "subject": "Kan niet inloggen", "body": "Ons team kan niet inloggen op de website sinds vanochtend, we staan stil."},
+ {"id": "B12", "received_at": "2026-11-16T12:40:00+00:00", "channel": "chat", "customer_plan": "Basis", "subject": "Export CSV", "body": "Wie exportiere ich die Schichtpläne als CSV?"},
+ {"id": "B13", "received_at": "2026-11-16T13:05:00+00:00", "channel": "email", "customer_plan": "Plus", "subject": "Dubbele afschrijving", "body": "Ik zie een dubbele afschrijving van 49 euro op onze rekening van vorige maand."},
+ {"id": "B14", "received_at": "2026-11-16T13:30:00+00:00", "channel": "form", "customer_plan": "Basis", "subject": "Vestigingen", "body": "Kunnen we met meerdere vestigingen werken op ons huidige pakket?"},
+ {"id": "B15", "received_at": "2026-11-16T14:00:00+00:00", "channel": "email", "customer_plan": "Plus", "subject": "Wrong plan charge", "body": "We were charged for Plus, but we are on Basis. Please fix this."}
+]
