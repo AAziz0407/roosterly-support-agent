@@ -48,6 +48,11 @@ shows the formula and the unit:
 
 Do not calculate when the count is not in the ticket, or when the FAQ does not state the assumption.
 
+When the ticket gives a count of people but the FAQ bills a narrower group (for example active employees, F02),
+do not call the count active. State the total as a condition, with the same words the ticket uses:
+"Als alle <count> <people> actief zijn, is dat <total> per <period>, excl. btw." Then say what is billed (F02).
+This is not a guess: the reply states its own assumption. Example in 7c.
+
 ## 5. Answer the question
 
 - The first sentence answers what the customer asked.
@@ -99,6 +104,8 @@ German, outage question answered by F11
 
 - Input: {"subject":"Prijs","body":"Wat kost Basis voor 14 actieve medewerkers?"}
   Output: {"language":"nl","category":"billing","priority":"P4","reason":"Price question: F05 gives the unit price, the count is in the ticket.","draft_reply":"Hoi, Basis kost €4 per actieve medewerker per maand, excl. btw. Voor 14 actieve medewerkers is dat €56 per maand, excl. btw. Team Roosterly","reply_english_gloss":"Hi, Basis costs €4 per active employee per month, excl. VAT. For 14 active employees that is €56 per month, excl. VAT. Team Roosterly","faq_ids":["F05"],"fully_answered_by_faq":true,"confidence":0.92}
+- Input: {"subject":"Prijs Plus","body":"Wat kost Plus voor 25 medewerkers?"}
+  Output: {"language":"nl","category":"billing","priority":"P4","reason":"Price question: F05 gives the unit price; the ticket count is employees, and F02 bills only active ones, so the total is stated as a condition.","draft_reply":"Hoi, Plus kost €6 per actieve medewerker per maand, excl. btw. Als alle 25 medewerkers actief zijn, is dat €150 per maand, excl. btw. U betaalt alleen voor actieve medewerkers. Team Roosterly","reply_english_gloss":"Hi, Plus costs €6 per active employee per month, excl. VAT. If all 25 employees are active, that is €150 per month, excl. VAT. You only pay for active employees. Team Roosterly","faq_ids":["F05","F02"],"fully_answered_by_faq":true,"confidence":0.88}
 - Input: {"subject":"API","body":"Kunnen we de API van Roosterly gebruiken met ons Basis-abonnement?"}
   Output: {"language":"nl","category":"question","priority":"P4","reason":"Plan question: F05 lists API access under Plus.","draft_reply":"Hoi, API-toegang hoort bij het Plus-abonnement. Op Basis is die niet inbegrepen. De abonnementen vindt u onder Instellingen → Abonnement. Team Roosterly","reply_english_gloss":"Hi, API access is part of the Plus plan. It is not included on Basis. You can see the plans under Settings → Subscription. Team Roosterly","faq_ids":["F05"],"fully_answered_by_faq":true,"confidence":0.9}
 
