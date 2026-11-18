@@ -1,0 +1,26 @@
+[
+ {
+  "id": "G08",
+  "received_at": "2026-11-18T11:15:00+00:00",
+  "channel": "email",
+  "customer_plan": "Plus",
+  "subject": "Pauze",
+  "body": "Kunnen jullie een automatische pauzeregistratie toevoegen zoals bij de concurrent? Dat zou voor ons heel handig zijn."
+ },
+ {
+  "id": "H05",
+  "received_at": "2026-11-19T11:30:00+00:00",
+  "channel": "app",
+  "customer_plan": "Basis",
+  "subject": "Hulp",
+  "body": "Ich habe mein Passwort vergessen und die E-Mail kommt nicht an. Was kann ich tun?"
+ },
+ {
+  "id": "H06",
+  "received_at": "2026-11-19T12:00:00+00:00",
+  "channel": "chat",
+  "customer_plan": "Basis",
+  "subject": "Wachtwoord",
+  "body": "Waar kan ik mijn wachtwoord opnieuw instellen?"
+ }
+]

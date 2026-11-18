@@ -1,0 +1,7 @@
+[
+ {"id": "H01", "received_at": "2026-11-19T08:00:00+00:00", "channel": "email", "customer_plan": "Basis", "subject": "Gebruikers", "body": "Hoe kan ik een tweede beheerder toevoegen aan ons account?"},
+ {"id": "H02", "received_at": "2026-11-19T08:40:00+00:00", "channel": "chat", "customer_plan": "Plus", "subject": "Rooster", "body": "Our whole team of 40 cannot see the shift plan since this morning. The app just shows a spinner."},
+ {"id": "H03", "received_at": "2026-11-19T09:15:00+00:00", "channel": "form", "customer_plan": "Basis", "subject": "Dagen", "body": "Kunt u mij vertellen hoeveel dagen per week de rooster-export maximaal kan bevatten?"},
+ {"id": "H04", "received_at": "2026-11-19T10:05:00+00:00", "channel": "email", "customer_plan": "Plus", "subject": "Prijsverhoging", "body": "Waarom staat er op de factuur van november €8 per medewerker? Wij betalen toch €6?"},
+ {"id": "H05", "received_at": "2026-11-19T11:30:00+00:00", "channel": "app", "customer_plan": "Basis", "subject": "Hulp", "body": "Ich habe mein Passwort vergessen und die E-Mail kommt nicht an. Was kann ich tun?"}
+]

@@ -1,0 +1,91 @@
+{
+ "tag": "haiku_boundary_v3",
+ "model": "claude-haiku-5-5",
+ "when": "2026-11-18T14:15:12",
+ "cost_usd": 0.0283,
+ "tokens_in": 20,
+ "tokens_out": 7708,
+ "rows": [
+  {
+   "ticket": {
+    "id": "G08",
+    "received_at": "2026-11-18T11:15:00+00:00",
+    "channel": "email",
+    "customer_plan": "Plus",
+    "subject": "Pauze",
+    "body": "Kunnen jullie een automatische pauzeregistratie toevoegen zoals bij de concurrent? Dat zou voor ons heel handig zijn."
+   },
+   "decision": {
+    "language": "nl",
+    "category": "feature_request",
+    "priority": "P4",
+    "reason": "Feature wish for automatic break registration with no date asked; F10 gives the roadmap pointer, so this is a reply, not a handoff.",
+    "action": "reply",
+    "faq_ids": [
+     "F10"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.9,
+    "draft_reply": "Hoi, dank voor uw idee. We hebben het genoteerd. U kunt het bekijken en er op stemmen op roadmap.roosterly.nl. Team Roosterly",
+    "reply_english_gloss": "Hi, thanks for your idea. We have logged it. You can view it and vote for it on roadmap.roosterly.nl. Team Roosterly",
+    "handoff_note": ""
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "H05",
+    "received_at": "2026-11-19T11:30:00+00:00",
+    "channel": "app",
+    "customer_plan": "Basis",
+    "subject": "Hulp",
+    "body": "Ich habe mein Passwort vergessen und die E-Mail kommt nicht an. Was kann ich tun?"
+   },
+   "decision": {
+    "language": "de",
+    "category": "bug",
+    "priority": "P3",
+    "reason": "The password reset email does not arrive; F01 gives the spam-folder check and the 60-minute link validity, so a workaround exists.",
+    "action": "reply",
+    "faq_ids": [
+     "F01"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.9,
+    "draft_reply": "Hallo, wenn die E-Mail nicht ankommt, prüfen Sie bitte zuerst Ihren Spam-Ordner. Bleibt sie auch nach 10 Minuten aus, gehen Sie auf app.roosterly.nl/login, klicken Sie auf „Wachtwoord vergeten“ (Passwort vergessen) und geben Sie Ihre E-Mail-Adresse ein. Der Link zum Zurücksetzen ist 60 Minuten gültig. Team Roosterly",
+    "reply_english_gloss": "Hello, if the email does not arrive, please check your spam folder first. If it still does not arrive after 10 minutes, go to app.roosterly.nl/login, click \"Wachtwoord vergeten\" (Forgot password) and enter your email address. The reset link is valid for 60 minutes. Team Roosterly",
+    "handoff_note": ""
+   },
+   "gates": []
+  },
+  {
+   "ticket": {
+    "id": "H06",
+    "received_at": "2026-11-19T12:00:00+00:00",
+    "channel": "chat",
+    "customer_plan": "Basis",
+    "subject": "Wachtwoord",
+    "body": "Waar kan ik mijn wachtwoord opnieuw instellen?"
+   },
+   "decision": {
+    "language": "nl",
+    "category": "question",
+    "priority": "P4",
+    "reason": "How-to question with no fault; F01 gives the password reset steps.",
+    "action": "reply",
+    "faq_ids": [
+     "F01"
+    ],
+    "fully_answered_by_faq": true,
+    "critical_topic": false,
+    "confidence": 0.95,
+    "draft_reply": "Hoi, ga naar app.roosterly.nl/login, klik op \"Wachtwoord vergeten\" (Forgot password) en vul je e-mailadres in. De resetlink is 60 minuten geldig. Team Roosterly",
+    "reply_english_gloss": "Hi, go to app.roosterly.nl/login, click \"Wachtwoord vergeten\" (Forgot password) and enter your email address. The reset link is valid for 60 minutes. Team Roosterly",
+    "handoff_note": ""
+   },
+   "gates": []
+  }
+ ]
+}

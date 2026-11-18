@@ -1,0 +1,246 @@
+{
+ "tag": "client10_single_faq_allfields",
+ "when": "2026-11-18T15:06:10",
+ "summary": {
+  "action_ok": 9,
+  "category_ok": 10,
+  "priority_ok": 10,
+  "language_ok": 10,
+  "unsafe_replies": 0,
+  "n": 10,
+  "cost_usd": 0.0718,
+  "tokens_in": 62,
+  "tokens_out": 20837,
+  "model": "claude-haiku-5-5"
+ },
+ "rows": [
+  {
+   "id": "E01",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "label": {
+    "action": "reply",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "gates": [],
+   "confidence": 0.85,
+   "unsafe": false
+  },
+  {
+   "id": "E02",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.93,
+   "unsafe": false
+  },
+  {
+   "id": "E03",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "gates": [
+    "keyword:terugbetal",
+    "llm_critical"
+   ],
+   "confidence": 0.95,
+   "unsafe": false
+  },
+  {
+   "id": "E04",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.93,
+   "unsafe": false
+  },
+  {
+   "id": "E05",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "feature_request",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "feature_request",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.9,
+   "unsafe": false
+  },
+  {
+   "id": "E06",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P2",
+    "language": "en"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P2",
+    "language": "en"
+   },
+   "gates": [],
+   "confidence": 0.85,
+   "unsafe": false
+  },
+  {
+   "id": "E07",
+   "action_ok": false,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [
+    "reply_blocked:judge_rejected"
+   ],
+   "confidence": 0.88,
+   "unsafe": false
+  },
+  {
+   "id": "E08",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "close",
+    "category": "other",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "close",
+    "category": "other",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.95,
+   "unsafe": false
+  },
+  {
+   "id": "E09",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "other",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "other",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "gates": [
+    "keyword:inzage",
+    "llm_critical"
+   ],
+   "confidence": 0.95,
+   "unsafe": false
+  },
+  {
+   "id": "E10",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.92,
+   "unsafe": false
+  }
+ ]
+}
