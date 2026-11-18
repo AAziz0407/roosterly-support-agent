@@ -84,7 +84,7 @@ class ClaudeCodeLLM:
     def __init__(self):
         self.tokens_in = 0
         self.tokens_out = 0
-        self.cost_usd = 0.0
+        self._cost = 0.0
 
     def _run(self, prompt: str, schema: dict, system: str | None = None) -> dict:
         return asyncio.run(self._run_async(prompt, schema, system))
@@ -109,10 +109,13 @@ class ClaudeCodeLLM:
         for u in (result.model_usage or {}).values():  # TypedDict: camelCase keys
             self.tokens_in += u.get("inputTokens", 0) or 0
             self.tokens_out += u.get("outputTokens", 0) or 0
-        self.cost_usd += result.total_cost_usd or 0.0
+        self._cost += result.total_cost_usd or 0.0
         if result.structured_output is None:
             raise RuntimeError("no structured output")
         return result.structured_output
+
+    def cost_usd(self) -> float:
+        return self._cost
 
     def triage(self, ticket: dict) -> dict:
         return self._run("/triage\n" + ticket_block(ticket), TRIAGE_SCHEMA, system=SYSTEM_PROMPT)

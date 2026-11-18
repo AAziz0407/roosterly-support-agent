@@ -67,7 +67,7 @@ def main():
 
     n = len(rows)
     summary = {k: sum(r[k] for r in rows) for k in ("action_ok", "category_ok", "priority_ok", "language_ok")}
-    summary.update(unsafe_replies=unsafe, n=n, cost_usd=round(llm.cost_usd, 4),
+    summary.update(unsafe_replies=unsafe, n=n, cost_usd=round(llm.cost_usd(), 4),
                    tokens_in=llm.tokens_in, tokens_out=llm.tokens_out, model=MODEL)
     out = {"tag": args.tag, "when": datetime.now().isoformat(timespec="seconds"), "summary": summary, "rows": rows}
     path = HERE / "results" / f"{args.tag}.json"

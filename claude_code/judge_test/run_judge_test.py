@@ -29,7 +29,7 @@ def main():
               f"answers={j['answers_question']} (expect {c['expect_answers']}) {'OK' if ok else 'MISMATCH'}")
         if not ok:
             print(f"    issues: {j['issues']}")
-    print(f"agreement {agree}/{len(cases)}  cost_usd={round(llm.cost_usd, 4)}")
+    print(f"agreement {agree}/{len(cases)}  cost_usd={round(llm.cost_usd(), 4)}")
 
 
 if __name__ == "__main__":

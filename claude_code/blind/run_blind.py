@@ -44,7 +44,7 @@ def main():
               f"{dec.get('language')} | gates={gates}", flush=True)
 
     out = {"tag": args.tag, "model": MODEL, "when": datetime.now().isoformat(timespec="seconds"),
-           "cost_usd": round(llm.cost_usd, 4), "tokens_in": llm.tokens_in, "tokens_out": llm.tokens_out,
+           "cost_usd": round(llm.cost_usd(), 4), "tokens_in": llm.tokens_in, "tokens_out": llm.tokens_out,
            "rows": rows}
     path = HERE / "results" / f"{args.tag}.json"
     path.parent.mkdir(exist_ok=True)
