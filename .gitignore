@@ -6,3 +6,6 @@ state/
 logs/*
 !logs/.gitkeep
 .DS_Store
+
+# assignment material and helpdesk key: never commit
+docs/
