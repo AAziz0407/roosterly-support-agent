@@ -14,7 +14,7 @@ PRIORITIES = ["P1", "P2", "P3", "P4"]
 # Below these the decision is sent to a human. Chosen to be conservative: a wrong reply
 # reaches a customer, an unnecessary handoff costs one minute of a human's time.
 MIN_CONF_REPLY = 0.80
-MIN_CONF_CLOSE = 0.90
+MIN_CONF_CLOSE = 0.85
 
 # --- FAQ ---------------------------------------------------------------------------
 FAQ_PATH = Path(__file__).resolve().parent.parent / "data" / "faq.md"
@@ -48,11 +48,11 @@ def has_payment_details(text: str) -> bool:
 TRIGGERS = [
     (r"terugbetal|restitutie|geld terug|terugkrijgen|terugstorten|refund|rückerstattung|erstattung", "P2"),
     (r"betwist|onterecht|dubbel afgeschreven|afgeschreven|incasso|stornier|chargeback|te veel betaald|dispute", "P2"),
-    (r"opzeg|opzegging|beëindig|beeindig|stopzet|stoppen met|annulering van (het |ons |mijn )?(abonnement|contract)|cancell?ation|cancel (my|our|the) (subscription|account|contract)|kündig|contract|overeenkomst", "P2"),
-    (r"overstappen|stap over|andere leverancier|weg bij jullie|niet meer gebruiken|switch to|leave you|wechseln", "P2"),
+    (r"opzeg|opzegging|beëindig|beeindig|stoppen met (het |ons |mijn |de )?(abonnement|roosterly|jullie|dienst)|annulering van (het |ons |mijn )?(abonnement|contract)|cancell?ation|cancel (my|our|the) (subscription|account|contract)|kündig|contractwijziging|(wijzig|aanpass|verander|beëindig|ontbind|verleng)\w*\W+(\w+\W+){0,3}contract\b|\bcontract\W+(wijzig|aanpass|beëindig|ontbind|verleng)|(change|amend|terminate|end)\W+(\w+\W+){0,3}contract\b|\bovereenkomst\b.{0,20}(opzeg|beëindig|ontbind)", "P2"),
+    (r"overstappen|stap over|andere leverancier|weg bij jullie|niet meer gebruiken|switch to|leave you|anbieter wechseln|anderen anbieter", "P2"),
     (r"\bavg\b|gdpr|dsgvo|persoonsgegevens|vergeten worden|gegevens verwijder|verwijder mijn|personal data|inzage", "P2"),
     (r"datalek|data breach|data leak", "P1"),
-    (r"gehackt|hack|inbreuk|ongeautoriseerd|onbevoegd|phishing|verdacht|beveiligingsincident|security incident|unauthori[sz]ed", "P1"),
+    (r"gehackt|\bhack(ed|er|ers|ing)?\b|inbreuk|ongeautoriseerd|onbevoegd|phishing|verdachte? (inlog|login|activiteit|e-?mail|mail|aanmelding)|verdenk|verdächtig|suspicious|beveiligingsincident|security incident|unauthori[sz]ed", "P1"),
     (r"advocaat|juridisch|rechtszaak|rechter|aansprakelijk|aangifte|sommatie|ingebrekestelling|dagvaard|autoriteit persoonsgegevens|lawyer|legal action|sue |klacht indienen|anwalt|klage", "P1"),
 ]
 _TRIGGERS = [(re.compile(p, re.I), prio) for p, prio in TRIGGERS]
@@ -96,6 +96,38 @@ def language_looks_right(draft: str, lang: str) -> bool:
         return False
     score = {k: sum(w in v for w in words) for k, v in _STOP.items()}
     return score[lang] >= 3 and score[lang] >= max(score.values())
+
+
+# --- Menu names: checkable without Dutch -------------------------------------------
+_CHAIN_RE = re.compile(r"(\S+)((?:\s*→\s*[^→\n()\[\].,;:]+)+)")
+_QUOTE_RE = re.compile(r"[\"“„]([^\"“”„]{2,60})[\"”“]")
+
+
+def _norm(s: str) -> str:
+    return " ".join(s.lower().split())
+
+
+def _menu_terms(text: str) -> list:
+    """Menu names written as 'Team → Medewerker toevoegen': the word before the first arrow and each segment after."""
+    terms = []
+    for m in _CHAIN_RE.finditer(text):
+        terms.append(_norm(m.group(1).strip(".,;:()\"“”'")))
+        terms += [_norm(seg) for seg in m.group(2).split("→") if seg.strip()]
+    return terms
+
+
+def unknown_menu_names(draft: str, faq_entries: list):
+    """Menu paths and quoted button names in the draft that the cited FAQ entries do not contain.
+
+    A mistyped Dutch menu name (for example 'Instellungen' for 'Instellingen') is caught by string comparison.
+    The last segment of a path may run on into prose, so a segment counts as known when it starts with a FAQ one.
+    """
+    source = "\n".join(faq_entries)
+    known = set(_menu_terms(source))
+    flat = _norm(source)
+    bad = [t for t in _menu_terms(draft) if not any(t == k or t.startswith(k + " ") for k in known)]
+    bad += [q for q in _QUOTE_RE.findall(draft) if _norm(q) not in flat]
+    return bad
 
 
 def _num(s: str) -> float:
@@ -165,8 +197,13 @@ def finalize(d: dict, ticket: dict, faq_entries: dict, judge: dict | None):
             bad = ungrounded_tokens(draft, [faq_entries[i] for i in ids], ticket.get("body", ""))
             if bad:
                 problems.append("ungrounded:" + ",".join(bad[:5]))
+        if draft and ids:
+            bad_menu = unknown_menu_names(draft, [faq_entries[i] for i in ids])
+            if bad_menu:
+                problems.append("unknown_menu:" + ",".join(bad_menu[:3]))
         if judge is None or not (judge.get("supported") and judge.get("answers_question")):
-            problems.append("judge_rejected")
+            issues = " ".join(((judge or {}).get("issues") or "").split())[:120]
+            problems.append("judge_rejected" + (f" ({issues})" if issues else ""))
         if problems:
             gates.append("reply_blocked:" + ";".join(problems))
             out["action"] = "handoff"

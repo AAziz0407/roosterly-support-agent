@@ -25,6 +25,26 @@ def test_keyword_gate_dutch():
     assert policy.keyword_gate("Pauze", "Wij overstappen naar de concurrent.")[0]
 
 
+def test_keyword_gate_ordinary_words_do_not_trigger():
+    # ordinary uses of words the gate used to match as substrings
+    for text in ["Wie kann ich die Sprache wechseln?",
+                 "Hoe pas ik de contracturen van een medewerker aan?",
+                 "Which contract hours can I enter for an employee?",
+                 "Ik vind het verdacht stil in de app",
+                 "Wij stoppen met roosteren op papier, hoe begin ik?"]:
+        assert policy.keyword_gate("", text)[0] == [], text
+
+
+def test_keyword_gate_contract_change_and_security_still_trigger():
+    for text, floor in [("Ik wil mijn contract wijzigen", "P2"),
+                        ("Please change our contract", "P2"),
+                        ("Wij stoppen met Roosterly", "P2"),
+                        ("Wir wollen den Anbieter wechseln", "P2"),
+                        ("Er was een verdachte inlog uit Roemenië", "P1")]:
+        hits, prio = policy.keyword_gate("", text)
+        assert hits and prio == floor, text
+
+
 def _reply(**kw):
     d = {"action": "reply", "faq_ids": ["F02"], "fully_answered_by_faq": True, "confidence": 0.95,
          "language": "nl", "category": "question", "priority": "P4", "reason": "r",
@@ -78,3 +98,22 @@ def test_guess_language():
     assert policy.guess_language("Wo werden meine Daten gespeichert? Ist das in der EU?") == "de"
     assert policy.guess_language("Hoe voeg ik een medewerker toe aan het rooster?") == "nl"
     assert policy.guess_language("ok") is None
+
+
+def test_menu_names_match_the_faq():
+    f03 = [FAQ["F03"]]
+    good = 'Tik op "Ruil aanbieden". De manager keurt het goed onder Rooster → Verzoeken (Rota → Requests).'
+    assert policy.unknown_menu_names(good, f03) == []
+    # a mistyped Dutch menu name, as seen in a German draft: caught without reading Dutch
+    typo = "Sie können das unter Instellungen → Rooster ausschalten."
+    assert policy.unknown_menu_names(typo, f03) == ["instellungen"]
+    assert policy.unknown_menu_names('Tik op "Dienst delen".', f03) == ["Dienst delen"]
+    ok_German = "Gehen Sie zu Instellingen → Rooster, um das auszuschalten."
+    assert policy.unknown_menu_names(ok_German, f03) == []
+
+
+def test_unknown_menu_blocks_a_reply():
+    d = _reply(faq_ids=["F03"], language="de",
+               draft_reply="Hallo, Sie können das unter Instellungen → Rooster für die Sie und das Team ausschalten. Team Roosterly")
+    out, gates = policy.finalize(d, {"body": "", "subject": ""}, FAQ, OK_JUDGE)
+    assert out["action"] == "handoff" and any("unknown_menu" in g for g in gates)
