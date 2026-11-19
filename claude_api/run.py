@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from roosterly.llm import LLM  # noqa: E402
+from roosterly.models import PROVIDERS, make_llm  # noqa: E402
 from roosterly.policy import load_faq  # noqa: E402
 from roosterly.runner import run  # noqa: E402
 
@@ -18,14 +19,17 @@ ROOT = Path(__file__).resolve().parent
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--provider", choices=PROVIDERS, default=os.environ.get("ROOSTERLY_PROVIDER", "claude"),
+                    help="claude: Haiku through the Claude API (online); local: Gemma through LM Studio (offline)")
     ap.add_argument("--reset", action="store_true", help="POST /practice/reset first and clear local state")
     args = ap.parse_args()
 
-    llm = LLM(load_faq()[0])
+    llm = make_llm(args.provider, load_faq()[0])
     res = run(llm, state_dir=ROOT / "state", logs_dir=ROOT / "logs", reset=args.reset)
     if args.reset:
         print("practice tickets re-opened, local state cleared")
     print(f"done: {res['counts']}  log: {res['log'].relative_to(ROOT)}  model cost: ${res['cost_usd']:.4f}")
+
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -23,20 +24,22 @@ load_dotenv(ROOT / ".env")
 
 from roosterly.client import Helpdesk  # noqa: E402
 from roosterly.decide import decide  # noqa: E402
-from roosterly.llm import LLM  # noqa: E402
+from roosterly.models import PROVIDERS, make_llm  # noqa: E402
 from roosterly.policy import load_faq  # noqa: E402
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="run")
+    ap.add_argument("--provider", choices=PROVIDERS, default=os.environ.get("ROOSTERLY_PROVIDER", "claude"),
+                    help="claude: Haiku through the Claude API (online); local: Gemma through LM Studio (offline)")
     ap.add_argument("--set", help="JSON file of labelled tickets instead of GET /examples")
     args = ap.parse_args()
 
     examples = (json.loads(Path(args.set).read_text(encoding="utf-8")) if args.set
                 else Helpdesk().examples())
     faq_text, faq_entries = load_faq()
-    llm = LLM(faq_text)
+    llm = make_llm(args.provider, faq_text)
 
     rows, unsafe = [], 0
     for ex in examples:
@@ -60,6 +63,7 @@ def main():
 
     n = len(rows)
     summary = {k: sum(r[k] for r in rows) for k in ("action_ok", "category_ok", "priority_ok", "language_ok")}
+    summary["provider"] = args.provider
     summary["unsafe_replies"] = unsafe
     summary["n"] = n
     summary["cost_usd"] = round(llm.cost_usd(), 5)

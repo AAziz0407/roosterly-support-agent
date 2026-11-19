@@ -4,7 +4,7 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 
 ## Repo layout
 
-- `claude_api/`: the API version. Gemma through LM Studio, `run.py`, `roosterly/` (shared safety layer), `eval/`, `tests/`, `data/`.
+- `claude_api/`: the API version. One switch, `--provider claude|local`: Haiku 5.5 through the Claude API (online) or Gemma through LM Studio (offline). `run.py`, `roosterly/` (shared safety layer), `eval/`, `tests/`, `data/`.
 - `claude_code/`: the Claude Code version. Haiku 5.5 through the Agent SDK, with its own `CLAUDE.md`, `.claude/skills` and `.claude/commands`. It imports `roosterly/` from `claude_api/`.
 - `README.md` at the root describes both. `.env.example` is at the root.
 

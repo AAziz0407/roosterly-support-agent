@@ -1,6 +1,6 @@
 # Roosterly support agent
 
-Triages Roosterly tickets (mostly Dutch) into one decision each: language, category, priority with a reason, and `reply`, `handoff` (English note) or `close`. The **Claude Code version** (`claude_code/`, Haiku 5.5 via the Claude Agent SDK) is the one I submit, and it ran live. The API version (`claude_api/`, Gemma via LM Studio) shares its runner and safety layer but was not run against the helpdesk; I have no Anthropic API key yet.
+Triages Roosterly tickets (mostly Dutch) into one decision each: language, category, priority with a reason, and `reply`, `handoff` (English note) or `close`. There are two versions with one runner and one safety layer (`claude_api/roosterly/`). The **Claude Code version** (`claude_code/`, Haiku 5.5 via the Claude Agent SDK) is the one I submit; the final run and the eval below come from it. The **API version** (`claude_api/`) has one model switch: `--provider claude` is Haiku 5.5 through the Claude API (online, needs `ANTHROPIC_API_KEY`), `--provider local` is Gemma through LM Studio (offline). Both use the same prompts, schemas and checks, and a backend that is not reachable stops the run before any ticket is touched.
 
 ## How to run
 
@@ -13,6 +13,8 @@ cd claude_code && python3 -m venv .venv && . .venv/bin/activate && pip install -
 python run.py --reset                # reset the practice tickets, then one run over all 30
 python eval.py --tag my_run          # the 10 labelled examples, scored
 ```
+
+API version: `cd claude_api && pip install -r requirements.txt && python run.py --provider claude` (or `--provider local`); the eval is `python eval/run_eval.py --provider ...`.
 
 Logs: one JSON line per ticket in `claude_code/logs/`. Tests (no network, no model): `cd claude_api && pip install -r requirements.txt && pytest -q tests`.
 
