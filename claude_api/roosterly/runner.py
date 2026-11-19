@@ -18,6 +18,9 @@ from .decide import api_payload, decide
 from .policy import load_faq, redact
 
 
+MAX_CONSECUTIVE_MODEL_FAILURES = 3  # then the run stops; the remaining tickets stay open for a re-run
+
+
 class Ledger:
     """Crash-safe record of what was decided/sent. Written atomically before and after each post."""
 
@@ -49,7 +52,11 @@ def _log(fh, **kw):
 
 
 def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
-    """Handle every open ticket once. Returns {'counts': {...}, 'log': path, 'cost_usd': float}."""
+    """Handle every open ticket once. Returns {'counts', 'log', 'cost_usd', 'stopped'}.
+
+    A failed model call still becomes a safe handoff. After MAX_CONSECUTIVE_MODEL_FAILURES in a row the run
+    stops ('stopped' is True) and the rest stay open; done tickets are skipped, so a re-run resumes.
+    """
     hd = Helpdesk()
     ledger = Ledger(state_dir / "ledger.json")
     if reset:
@@ -60,9 +67,12 @@ def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
     logs_dir.mkdir(parents=True, exist_ok=True)
     log_path = logs_dir / f"run-{datetime.now():%Y%m%d-%H%M%S}.log"
     counts = {}
+    stopped = False
+    failures_in_a_row = 0
 
     with open(log_path, "a", encoding="utf-8") as fh:
-        for t in hd.open_tickets():
+        tickets = hd.open_tickets()
+        for i, t in enumerate(tickets):
             tid = t["id"]
             t0 = time.time()
             retries0 = getattr(hd, "retries", 0)
@@ -85,6 +95,7 @@ def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
                     gates = ["resumed_after_crash"]
                 else:
                     decision, gates = decide(t, llm, faq_entries)
+                    failures_in_a_row = failures_in_a_row + 1 if "model_call_failed" in gates else 0
                     action, body = api_payload(decision)
                     ledger.data.pop(tid, None)  # drop any entry left from a different ticket
                     ledger.set(tid, fp=fp, status="pending", action=action, body=body, decision=decision)
@@ -103,7 +114,13 @@ def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
                      gloss=redact(decision.get("reply_english_gloss") or "") or None,
                      retries=getattr(hd, "retries", 0) - retries0,
                      ms=int((time.time() - t0) * 1000))
+                if failures_in_a_row >= MAX_CONSECUTIVE_MODEL_FAILURES:
+                    # The model is down (bad key, no server, outage). Stop instead of handing off every ticket.
+                    stopped = True
+                    left = len(tickets) - i - 1
+                    _log(fh, status="stopped_circuit_open", failures_in_a_row=failures_in_a_row, left_open=left)
+                    break
             except (HelpdeskError, Exception) as e:  # one bad ticket must not stop the run
                 _log(fh, **info, status="error", error=redact(str(e))[:200])
                 counts["error"] = counts.get("error", 0) + 1
-    return {"counts": counts, "log": log_path, "cost_usd": llm.cost_usd()}
+    return {"counts": counts, "log": log_path, "cost_usd": llm.cost_usd(), "stopped": stopped}

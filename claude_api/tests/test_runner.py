@@ -108,3 +108,47 @@ def test_reused_ticket_id_with_different_content_is_decided_fresh(monkeypatch, t
     assert FakeHelpdesk.acted == [("T1", "handoff"), ("T1", "handoff")]
     ledger = json.loads((state / "ledger.json").read_text())["T1"]
     assert ledger["fp"] == runner.fingerprint(other) and ledger["status"] == "done"
+
+
+def _tickets(n):
+    return [{**TICKET, "id": f"T{i}"} for i in range(1, n + 1)]
+
+
+class FlakyLLM(FakeLLM):
+    """Raises for the tickets whose id is in `fail`, answers the others."""
+
+    def __init__(self, fail):
+        super().__init__()
+        self.fail = set(fail)
+
+    def triage(self, ticket):
+        if ticket["id"] in self.fail:
+            raise ConnectionError("model unreachable")
+        return super().triage(ticket)
+
+
+def test_run_stops_after_three_model_failures_in_a_row(monkeypatch, tmp_path):
+    state, logs = _setup(monkeypatch, tmp_path, _tickets(6))
+    res = runner.run(FlakyLLM({f"T{i}" for i in range(1, 7)}), state, logs)
+    assert res["stopped"] is True
+    # option A: the three failed tickets still became safe handoffs, nothing was posted after that
+    assert FakeHelpdesk.acted == [("T1", "handoff"), ("T2", "handoff"), ("T3", "handoff")]
+    last = _lines(logs)[-1]
+    assert last["status"] == "stopped_circuit_open" and last["left_open"] == 3
+
+
+def test_a_good_ticket_resets_the_failure_count(monkeypatch, tmp_path):
+    state, logs = _setup(monkeypatch, tmp_path, _tickets(6))
+    res = runner.run(FlakyLLM({"T1", "T2", "T4", "T5"}), state, logs)  # fail, fail, ok, fail, fail, ok
+    assert res["stopped"] is False
+    assert len(FakeHelpdesk.acted) == 6
+
+
+def test_stopped_run_resumes_where_it_left_off(monkeypatch, tmp_path):
+    state, logs = _setup(monkeypatch, tmp_path, _tickets(5))
+    runner.run(FlakyLLM({"T1", "T2", "T3", "T4", "T5"}), state, logs)
+    assert len(FakeHelpdesk.acted) == 3
+    FakeHelpdesk.open_now = _tickets(5)[3:]  # the server now lists only the two that were not posted
+    res = runner.run(FakeLLM(), state, logs)
+    assert res["stopped"] is False
+    assert [t for t, _ in FakeHelpdesk.acted] == ["T1", "T2", "T3", "T4", "T5"]

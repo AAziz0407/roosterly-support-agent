@@ -15,9 +15,11 @@ def model_input(ticket: dict) -> dict:
 def decide(ticket: dict, llm, faq_entries: dict):
     """Return (decision, gates). Any model failure degrades to a safe handoff."""
     ticket = model_input(ticket)
+    model_failed = False
     try:
         proposal = llm.triage(ticket)
     except Exception as e:  # network, refusal, bad JSON ...
+        model_failed = True
         proposal = {"action": "handoff", "confidence": 0.0, "category": "other", "priority": "P3",
                     "language": "nl", "reason": f"Model call failed ({type(e).__name__}).",
                     "handoff_note": "Automatic triage failed; please read the ticket."}
@@ -31,6 +33,8 @@ def decide(ticket: dict, llm, faq_entries: dict):
             except Exception:
                 judge = None  # no judge verdict -> reply is blocked by policy.finalize
     decision, gates = policy.finalize(proposal, ticket, faq_entries, judge)
+    if model_failed:
+        gates.append("model_call_failed")  # the runner counts these to stop a run when the model is down
     decision["faq_ids"] = [i for i in proposal.get("faq_ids") or [] if i in faq_entries]
     decision["reply_english_gloss"] = proposal.get("reply_english_gloss", "") if decision["action"] == "reply" else ""
     return decision, gates

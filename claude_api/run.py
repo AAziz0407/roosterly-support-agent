@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -29,7 +30,9 @@ def main():
     if args.reset:
         print("practice tickets re-opened, local state cleared")
     print(f"done: {res['counts']}  log: {res['log'].relative_to(ROOT)}  model cost: ${res['cost_usd']:.4f}")
-
+    if res["stopped"]:
+        sys.exit("STOPPED: the model failed on 3 tickets in a row. The rest are still open. "
+                 "Fix the backend (key, server, network) and run again; finished tickets are skipped.")
 
 
 if __name__ == "__main__":
