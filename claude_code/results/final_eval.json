@@ -1,0 +1,271 @@
+{
+ "tag": "after_skill_edit",
+ "when": "2026-11-19T18:37:11",
+ "summary": {
+  "action_ok": 10,
+  "category_ok": 10,
+  "priority_ok": 10,
+  "language_ok": 10,
+  "reply_n": 6,
+  "reply_faq_ok": 6,
+  "reply_lang_ok": 6,
+  "unsafe_replies": 0,
+  "n": 10,
+  "cost_usd": 0.0513,
+  "tokens_in": 54,
+  "tokens_out": 20471,
+  "model": "claude-haiku-5-5"
+ },
+ "rows": [
+  {
+   "id": "E01",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "label": {
+    "action": "reply",
+    "category": "bug",
+    "priority": "P3",
+    "language": "en"
+   },
+   "gates": [],
+   "confidence": 0.82,
+   "unsafe": false,
+   "faq_ok": true,
+   "reply_lang_ok": true,
+   "draft_reply": "Hi, the Roosterly app works on iOS 16 or later and on Android 10 or later. Your iPhone is on iOS 15, which is below that minimum. Team Roosterly",
+   "gloss": "Hi, the Roosterly app works on iOS 16 or later and on Android 10 or later. Your iPhone is on iOS 15, which is below that minimum. Team Roosterly"
+  },
+  {
+   "id": "E02",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.92,
+   "unsafe": false,
+   "faq_ok": true,
+   "reply_lang_ok": true,
+   "draft_reply": "Hoi, U past het btw-nummer zelf aan onder Instellingen → Bedrijfsgegevens (Settings → Company details). De wijziging geldt voor toekomstige facturen. Team Roosterly",
+   "gloss": "Hi, you can change the VAT number yourself under Settings → Company details (Instellingen → Bedrijfsgegevens). The change applies to future invoices. Team Roosterly"
+  },
+  {
+   "id": "E03",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "billing",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "gates": [
+    "keyword:terugbetal",
+    "llm_critical"
+   ],
+   "confidence": 0.95,
+   "unsafe": false
+  },
+  {
+   "id": "E04",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.95,
+   "unsafe": false,
+   "faq_ok": true,
+   "reply_lang_ok": true,
+   "draft_reply": "Hoi, open de dienst in de app en tik op \"Ruil aanbieden\" (Offer swap). Collega's met dezelfde functie kunnen de ruil accepteren. De manager keurt de ruil goed onder Rooster (Rota) → Verzoeken (Requests). Team Roosterly",
+   "gloss": "Hi, open the shift in the app and tap \"Offer swap\". Colleagues with the same role can accept the swap. The manager approves it under Rota → Requests. Team Roosterly"
+  },
+  {
+   "id": "E05",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "feature_request",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "feature_request",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.9,
+   "unsafe": false,
+   "faq_ok": true,
+   "reply_lang_ok": true,
+   "draft_reply": "Hoi, dank voor uw idee voor een koppeling met Google Agenda voor de diensten. We hebben het genoteerd. U kunt het bekijken en erop stemmen op roadmap.roosterly.nl. Team Roosterly",
+   "gloss": "Hi, thanks for your idea of a Google Calendar integration for shifts. We have logged it. You can view it and vote for it on roadmap.roosterly.nl. Team Roosterly"
+  },
+  {
+   "id": "E06",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P2",
+    "language": "en"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "bug",
+    "priority": "P2",
+    "language": "en"
+   },
+   "gates": [],
+   "confidence": 0.85,
+   "unsafe": false
+  },
+  {
+   "id": "E07",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "billing",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.88,
+   "unsafe": false,
+   "faq_ok": true,
+   "reply_lang_ok": true,
+   "draft_reply": "Hoi, Plus kost €6 per actieve medewerker per maand, excl. btw. Als alle 25 medewerkers actief zijn, is dat €150 per maand, excl. btw. U betaalt alleen voor actieve medewerkers. Team Roosterly",
+   "gloss": "Hi, Plus costs €6 per active employee per month, excl. VAT. If all 25 employees are active, that is €150 per month, excl. VAT. You only pay for active employees. Team Roosterly"
+  },
+  {
+   "id": "E08",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "close",
+    "category": "other",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "close",
+    "category": "other",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.95,
+   "unsafe": false
+  },
+  {
+   "id": "E09",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "handoff",
+    "category": "other",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "label": {
+    "action": "handoff",
+    "category": "other",
+    "priority": "P2",
+    "language": "nl"
+   },
+   "gates": [
+    "keyword:inzage",
+    "llm_critical"
+   ],
+   "confidence": 0.95,
+   "unsafe": false
+  },
+  {
+   "id": "E10",
+   "action_ok": true,
+   "category_ok": true,
+   "priority_ok": true,
+   "language_ok": true,
+   "got": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "label": {
+    "action": "reply",
+    "category": "question",
+    "priority": "P4",
+    "language": "nl"
+   },
+   "gates": [],
+   "confidence": 0.93,
+   "unsafe": false,
+   "faq_ok": true,
+   "reply_lang_ok": true,
+   "draft_reply": "Hoi, gepland onderhoud en actuele storingen vindt u op status.roosterly.nl. Team Roosterly",
+   "gloss": "Hi, planned maintenance and current outages are on status.roosterly.nl. Team Roosterly"
+  }
+ ]
+}

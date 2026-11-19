@@ -64,9 +64,9 @@ P1
 
 P2
 - {"subject":"Rooster","body":"Ik kan de week niet publiceren, de knop geeft een foutmelding en er is geen omweg."} -> {"language":"nl","category":"bug","priority":"P2","reason":"One customer blocked from publishing, no workaround.","action":"handoff"}
-- {"subject":"Terugbetaling","body":"Graag de dubbele betaling van januari terugbetalen."} -> {"language":"nl","category":"billing","priority":"P2","reason":"Refund request, money at stake.","action":"handoff"}
+- {"subject":"Dubbele betaling","body":"Graag de dubbele betaling van januari terugbetalen."} -> {"language":"nl","category":"billing","priority":"P2","reason":"Refund request, money at stake.","action":"handoff"}
 - {"subject":"Stoppen","body":"We willen per 1 mei stoppen met Roosterly."} -> {"language":"nl","category":"billing","priority":"P2","reason":"Cancellation, a contract change.","action":"handoff"}
-- {"subject":"Publish","body":"I cannot publish next week's rota. The button shows an error and I have no other way to publish it."} -> {"language":"en","category":"bug","priority":"P2","reason":"One customer blocked from publishing, no workaround.","action":"handoff"}
+- {"subject":"Export","body":"I cannot export our hours to PDF. The button shows an error and I have no other way to get the file."} -> {"language":"en","category":"bug","priority":"P2","reason":"One customer blocked from exporting, no workaround.","action":"handoff"}
 
 P3
 - {"subject":"Telefoon","body":"De app toont geen diensten op mijn telefoon, in de webversie zie ik ze wel."} -> {"language":"nl","category":"bug","priority":"P3","reason":"Bug with a workaround (web version).","action":"handoff"}

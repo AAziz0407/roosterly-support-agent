@@ -22,6 +22,7 @@ from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query  # noqa: E
 
 from roosterly.policy import guess_language, load_faq, redact  # noqa: E402
 
+CALL_TIMEOUT = 180  # seconds; a hung model call becomes a safe handoff, not a stuck run
 MODEL = os.environ.get("CC_MODEL", "claude-haiku-5-5")  # e.g. CC_MODEL=claude-sonnet-5-5
 # Triage contract plus the help centre (the single FAQ file, claude_api/data/faq.md). The judge uses the default prompt.
 SYSTEM_PROMPT = ((HERE / "system.md").read_text(encoding="utf-8")
@@ -87,7 +88,7 @@ class ClaudeCodeLLM:
         self._cost = 0.0
 
     def _run(self, prompt: str, schema: dict, system: str | None = None) -> dict:
-        return asyncio.run(self._run_async(prompt, schema, system))
+        return asyncio.run(asyncio.wait_for(self._run_async(prompt, schema, system), CALL_TIMEOUT))
 
     async def _run_async(self, prompt: str, schema: dict, system: str | None) -> dict:
         opts = ClaudeAgentOptions(

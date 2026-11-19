@@ -71,7 +71,7 @@ This is not a guess: the reply states its own assumption. Example in 7c.
 ## 7. Examples: three replies (invented, helpdesk format)
 
 Dutch, how-to answered by F03
-- Input: {"subject":"Dienst ruilen","body":"Hoe kan een collega een dienst van mij overnemen?"}
+- Input: {"subject":"Overnemen","body":"Hoe kan een collega een dienst van mij overnemen?"}
 - Output: {"language":"nl","category":"question","priority":"P4","reason":"How-to, fully answered by F03.","draft_reply":"Hoi, open de dienst in de app en tik op \"Ruil aanbieden\". Collega's met dezelfde functie kunnen de ruil accepteren. De manager keurt de ruil goed onder Rooster → Verzoeken. Team Roosterly","reply_english_gloss":"Hi, open the shift in the app and tap \"Offer swap\". Colleagues with the same role can accept it. The manager approves it under Rota → Requests. Team Roosterly","faq_ids":["F03"],"confidence":0.93}
 
 English, price calculation from F05 with the count from the ticket
@@ -104,8 +104,8 @@ German, outage question answered by F11
 
 - Input: {"subject":"Prijs","body":"Wat kost Basis voor 14 actieve medewerkers?"}
   Output: {"language":"nl","category":"billing","priority":"P4","reason":"Price question: F05 gives the unit price, the count is in the ticket.","draft_reply":"Hoi, Basis kost €4 per actieve medewerker per maand, excl. btw. Voor 14 actieve medewerkers is dat €56 per maand, excl. btw. Team Roosterly","reply_english_gloss":"Hi, Basis costs €4 per active employee per month, excl. VAT. For 14 active employees that is €56 per month, excl. VAT. Team Roosterly","faq_ids":["F05"],"fully_answered_by_faq":true,"confidence":0.92}
-- Input: {"subject":"Prijs Plus","body":"Wat kost Plus voor 25 medewerkers?"}
-  Output: {"language":"nl","category":"billing","priority":"P4","reason":"Price question: F05 gives the unit price; the ticket count is employees, and F02 bills only active ones, so the total is stated as a condition.","draft_reply":"Hoi, Plus kost €6 per actieve medewerker per maand, excl. btw. Als alle 25 medewerkers actief zijn, is dat €150 per maand, excl. btw. U betaalt alleen voor actieve medewerkers. Team Roosterly","reply_english_gloss":"Hi, Plus costs €6 per active employee per month, excl. VAT. If all 25 employees are active, that is €150 per month, excl. VAT. You only pay for active employees. Team Roosterly","faq_ids":["F05","F02"],"fully_answered_by_faq":true,"confidence":0.88}
+- Input: {"subject":"Kosten","body":"Wat betalen we per maand voor 9 medewerkers op Basis?"}
+  Output: {"language":"nl","category":"billing","priority":"P4","reason":"Price question: F05 gives the unit price; the ticket count is employees, and F02 bills only active ones, so the total is stated as a condition.","draft_reply":"Hoi, Basis kost €4 per actieve medewerker per maand, excl. btw. Als alle 9 medewerkers actief zijn, is dat €36 per maand, excl. btw. U betaalt alleen voor actieve medewerkers. Team Roosterly","reply_english_gloss":"Hi, Basis costs €4 per active employee per month, excl. VAT. If all 9 employees are active, that is €36 per month, excl. VAT. You only pay for active employees. Team Roosterly","faq_ids":["F05","F02"],"fully_answered_by_faq":true,"confidence":0.88}
 - Input: {"subject":"API","body":"Kunnen we de API van Roosterly gebruiken met ons Basis-abonnement?"}
   Output: {"language":"nl","category":"question","priority":"P4","reason":"Plan question: F05 lists API access under Plus.","draft_reply":"Hoi, API-toegang hoort bij het Plus-abonnement. Op Basis is die niet inbegrepen. De abonnementen vindt u onder Instellingen → Abonnement. Team Roosterly","reply_english_gloss":"Hi, API access is part of the Plus plan. It is not included on Basis. You can see the plans under Settings → Subscription. Team Roosterly","faq_ids":["F05"],"fully_answered_by_faq":true,"confidence":0.9}
 

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -17,7 +18,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "claude_api"))
 
 from roosterly.decide import decide  # noqa: E402
-from roosterly.policy import load_faq  # noqa: E402
+from roosterly.policy import language_looks_right, load_faq  # noqa: E402
 from triage import MODEL, ClaudeCodeLLM  # noqa: E402
 
 
@@ -61,12 +62,23 @@ def main():
             "gates": gates, "confidence": dec.get("confidence"),
         }
         r["unsafe"] = dec["action"] == "reply" and lab["action"] != "reply"
+        if lab["action"] == "reply":
+            # Reply quality, checkable without Dutch. The client's label names the FAQ entry that answers it.
+            expected = set(re.findall(r"\bF\d{2}\b", lab.get("reason", "")))
+            replied = dec["action"] == "reply"
+            r["faq_ok"] = replied and expected <= set(dec.get("faq_ids") or [])
+            r["reply_lang_ok"] = replied and language_looks_right(dec.get("draft_reply", ""), lab["language"])
+            r["draft_reply"] = dec.get("draft_reply")
+            r["gloss"] = dec.get("reply_english_gloss")
         unsafe += r["unsafe"]
         rows.append(r)
         print(f"  {ex['id']} done: {r['got']}", flush=True)
 
     n = len(rows)
     summary = {k: sum(r[k] for r in rows) for k in ("action_ok", "category_ok", "priority_ok", "language_ok")}
+    reply_rows = [r for r in rows if "faq_ok" in r]
+    summary.update(reply_n=len(reply_rows), reply_faq_ok=sum(r["faq_ok"] for r in reply_rows),
+                   reply_lang_ok=sum(r["reply_lang_ok"] for r in reply_rows))
     summary.update(unsafe_replies=unsafe, n=n, cost_usd=round(llm.cost_usd(), 4),
                    tokens_in=llm.tokens_in, tokens_out=llm.tokens_out, model=MODEL)
     out = {"tag": args.tag, "when": datetime.now().isoformat(timespec="seconds"), "summary": summary, "rows": rows}
@@ -75,6 +87,7 @@ def main():
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
 
     print(f"{args.tag}: " + "  ".join(f"{k}={summary[k]}/{n}" for k in ("action_ok", "category_ok", "priority_ok", "language_ok"))
+          + f"  reply_faq_ok={summary['reply_faq_ok']}/{summary['reply_n']}  reply_lang_ok={summary['reply_lang_ok']}/{summary['reply_n']}"
           + f"  UNSAFE_REPLIES={unsafe}  cost_usd={summary['cost_usd']}")
     for r in rows:
         bad = [k[:-3] for k in ("action_ok", "category_ok", "priority_ok", "language_ok") if not r[k]]
