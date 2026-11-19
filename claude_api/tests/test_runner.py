@@ -86,7 +86,7 @@ def test_crash_after_decide_reuses_decision_without_model_call(monkeypatch, tmp_
     decision = {"language": "nl", "category": "question", "priority": "P4", "action": "handoff",
                 "reason": "x", "confidence": 0.9, "handoff_note": "Customer wants: y. Key facts: z. Next step: w."}
     (state / "ledger.json").write_text(json.dumps({"T1": {
-        "status": "pending", "action": "handoff", "decision": decision,
+        "fp": runner.fingerprint(TICKET), "status": "pending", "action": "handoff", "decision": decision,
         "body": {"language": "nl", "category": "question", "priority": "P4", "reason": "x",
                  "confidence": 0.9, "handoff_note": "Customer wants: y. Key facts: z. Next step: w."}}}))
     llm = FakeLLM()
@@ -94,3 +94,17 @@ def test_crash_after_decide_reuses_decision_without_model_call(monkeypatch, tmp_
     assert llm.calls == 0
     assert FakeHelpdesk.acted == [("T1", "handoff")]
     assert _lines(logs)[0]["gates"] == ["resumed_after_crash"]
+
+
+def test_reused_ticket_id_with_different_content_is_decided_fresh(monkeypatch, tmp_path):
+    # new tickets that reuse an old id must not be skipped, and a saved decision must not be replayed on them
+    state, logs = _setup(monkeypatch, tmp_path, [TICKET])
+    llm = FakeLLM()
+    runner.run(llm, state, logs)
+    other = {**TICKET, "body": "Een heel andere vraag over de planning."}
+    FakeHelpdesk.open_now = [other]
+    runner.run(llm, state, logs)
+    assert llm.calls == 2
+    assert FakeHelpdesk.acted == [("T1", "handoff"), ("T1", "handoff")]
+    ledger = json.loads((state / "ledger.json").read_text())["T1"]
+    assert ledger["fp"] == runner.fingerprint(other) and ledger["status"] == "done"

@@ -5,8 +5,10 @@ object needs two methods, triage(ticket) and judge(ticket, excerpt, draft), and 
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import sys
 import time
 from datetime import datetime
 from pathlib import Path
@@ -35,6 +37,12 @@ class Ledger:
         self.path.unlink(missing_ok=True)
 
 
+def fingerprint(ticket: dict) -> str:
+    """Identifies the ticket's content, so a ledger entry is only reused for the same ticket."""
+    text = f"{ticket.get('subject') or ''}\n{ticket.get('body') or ''}"
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+
+
 def _log(fh, **kw):
     fh.write(json.dumps({"ts": datetime.now().isoformat(timespec="seconds"), **kw}, ensure_ascii=False) + "\n")
     fh.flush()
@@ -57,13 +65,19 @@ def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
         for t in hd.open_tickets():
             tid = t["id"]
             t0 = time.time()
+            retries0 = getattr(hd, "retries", 0)
+            fp = fingerprint(t)
             rec = ledger.data.get(tid, {})
+            if rec and rec.get("fp") != fp:  # the helpdesk now has a different ticket under this id
+                rec = {}
             info = {"ticket": tid}
             try:
                 if rec.get("status") == "done":
                     # The server still lists it as open, so local state is stale (a practice reset
                     # was done outside this run). Do not guess; skip and say so.
                     _log(fh, **info, status="skipped_stale_ledger")
+                    print(f"WARNING {tid}: ledger says done but the helpdesk lists it as open; skipped. "
+                          "Re-run with --reset if the practice tickets were reset.", file=sys.stderr)
                     counts["skipped"] = counts.get("skipped", 0) + 1
                     continue
                 if rec.get("status") == "pending":  # crashed between decide and post: reuse the decision
@@ -72,7 +86,8 @@ def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
                 else:
                     decision, gates = decide(t, llm, faq_entries)
                     action, body = api_payload(decision)
-                    ledger.set(tid, status="pending", action=action, body=body, decision=decision)
+                    ledger.data.pop(tid, None)  # drop any entry left from a different ticket
+                    ledger.set(tid, fp=fp, status="pending", action=action, body=body, decision=decision)
                 try:
                     hd.act(tid, action, body)
                     status = "posted"
@@ -86,6 +101,7 @@ def run(llm, state_dir: Path, logs_dir: Path, reset: bool = False) -> dict:
                      gates=gates, reason=redact(decision["reason"]),
                      # English gloss of a Dutch draft, so a reviewer can check the reply without reading Dutch
                      gloss=redact(decision.get("reply_english_gloss") or "") or None,
+                     retries=getattr(hd, "retries", 0) - retries0,
                      ms=int((time.time() - t0) * 1000))
             except (HelpdeskError, Exception) as e:  # one bad ticket must not stop the run
                 _log(fh, **info, status="error", error=redact(str(e))[:200])

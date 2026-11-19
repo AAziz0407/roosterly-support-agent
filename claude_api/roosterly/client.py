@@ -33,6 +33,7 @@ class Helpdesk:
         self.s = requests.Session()
         self.s.headers.update({"Authorization": f"Bearer {key}", "X-Candidate-Email": mail})
         self._last = 0.0
+        self.retries = 0  # 503, 429 and network retries so far; the runner logs the count per ticket
         self._lock = threading.Lock()
 
     def _throttle(self):
@@ -48,12 +49,15 @@ class Helpdesk:
             try:
                 r = self.s.request(method, self.base + path, timeout=20, **kw)
             except requests.RequestException:
+                self.retries += 1
                 time.sleep(min(2 ** attempt, 10))  # network blip: retry
                 continue
             if r.status_code == 429:
+                self.retries += 1
                 time.sleep(float(r.headers.get("Retry-After", 1)) + 0.1)
                 continue
             if r.status_code == 503:
+                self.retries += 1
                 time.sleep(min(0.5 * 2 ** attempt, 8) + random.random() * 0.3)
                 continue
             if r.status_code == 409:
